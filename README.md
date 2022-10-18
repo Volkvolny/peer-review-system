@@ -1,8 +1,8 @@
 # peer-review-system
 
-Created during my final year of college, I took a lot of the initiative in my group on this massive project for our computer professor.
+Created during my final year of college, I took a lot of the initiative in my group on this massive project for our computer professor. It was asked that we only use HTML, CSS, and Javascript for the program, and that it all be accessible on one page.
 
-Function: This program imports a given .txt file that is comma delimited and creates a table with the data. The first line is always the class name, the lines following are the students' names and their peer review points. Ex: Ruby Rose,3
+Function: This program imports a given .txt file that is comma delimited and creates a table with the data for use in giving and subtracting peer review points, and to generate a leaderboard of students in the lead. The first line is always the class name, the lines following are the students' names and their peer review points. Ex: Ruby Rose,3
 
 Student names are broken up by spaces. Ex: Ruby Rose will fill the table with the first name Ruby, the last name Rose
 
