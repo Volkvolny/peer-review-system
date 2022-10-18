@@ -1,0 +1,8 @@
+Beacon Academy
+Ruby Rose,1
+Yang Xiao-Long,1
+Blake Belladonna,2
+Weiss Schnee,0
+Pyrrha Nikos,1
+Nora Valkyrie,2
+Lie Ren,5

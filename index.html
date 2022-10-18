@@ -1,0 +1,672 @@
+<!--COMMENTS-->
+<!DOCTYPE html>
+<!-- saved from url=(0064)https://learn.bree.csci.morningside.edu/hcj/res/basicTable1.html -->
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Peer Review System</title>
+<!-- STYLE INFO -->
+<style>
+body {background: black;}
+h3{text-align: center;}
+button {color: black}
+input {color: black;}
+option {color: black}
+table {border-radius: 4px;
+				background: ghostwhite; border: solid ghostwhite;}
+th {border: black; border-style: hidden; text-decoration-color: black;}
+td {text-align: center; border: solid black; border-width: thin;}
+textarea{display: block; margin-left: auto; margin-right: auto;}
+.buttonAdd {color: ghostwhite}
+.center {text-align: center; color: black;}
+.leaderboard {
+	margin-left: auto;
+	margin-right: auto;
+	justify-content: center;
+	margin-top: 15px;
+							}
+.center2 {
+	display: flex;
+	justify-content: center;
+	margin-left: 7%; color: ghostwhite
+					}
+#placement {display: flex; justify-content: center;}
+#header {
+	text-decoration: underline;
+	font-size: 40px; color:ghostwhite
+				}
+.under {text-decoration: underline; color:ghostwhite}
+#selectstuff {
+	display: flex;
+	justify-content: center;
+	margin-top: 15px;
+							}
+.Move {margin-left: 29%;}
+#grad {
+	background-image: linear-gradient(to right, #1a2980, #26d0ce);
+	/*Different gradient options, copy paste numbers in, can be changed easily
+	/*purple paradise -#1d2b64, #f8cdda  aqua marine #1a2980, #26d0ce taran tado  #230074, #cc5333  sunset #0b486b, #f56217
+	*/
+			}
+
+</style>
+	<script>
+
+
+	/*********************
+	APPLICATION NAME SPACE
+	*********************/
+
+	var list = {};
+
+	/*****************
+	EVENT HANDLER
+	******************/
+
+
+
+	/**********************
+	WINDOW.ONLOAD
+	***********************/
+	window.onload = function()
+	{
+    document.getElementById("leaderboard").style.display = "none";
+    document.getElementById("button15").addEventListener('click', list.generateLeaderboard);
+	}
+
+	</script>
+</head>
+<!-- PAGEBODY -->
+<body id="grad">
+	<div class="center">
+		<h2 id="header">Peer Review List</h2>
+		<p class="under">Class: </p><p id="className"></p>
+	</div>
+	<div class="center2">
+	<input type="file" name="inputfile" id="inputfile">
+	</div>
+	<br>
+	<script type="text/javascript">
+		var fileContent = [];
+		var allNames = [];
+		var nameNum = [];
+		var setToSave = [];
+		var createFunction = {};
+
+		// Save add value
+		function saveAddValue(attribute, className, inputValue)
+		{
+			// attribute is the button #, className is the student box #, inputValue is the peer review box data
+			// studentName is the student's name
+			var studentName = document.getElementById(className).innerHTML;
+			document.getElementById(attribute).stepUp(1);
+			var number = inputValue.value;
+			for (i=0; i < nameNum.length; i++)
+			{
+				// Find the matching name value
+				if (nameNum[i][0] == studentName)
+				{
+					// Save the number
+						nameNum[i][1] = number;
+						break;
+				}
+				else
+					{
+						continue;
+					}
+			}
+		} //End save add value
+
+		// Save minus value
+		function saveMinusValue(attribute, className, inputValue)
+		{
+			// attribute is the button #, className is the student box #, inputValue is the peer review box data
+			// studentName is the student's name
+			var studentName = document.getElementById(className).innerHTML;
+			document.getElementById(attribute).stepDown(1);
+			var number = inputValue.value;
+			for (i=0; i < nameNum.length; i++)
+			{
+				// Find the matching name value
+				if (nameNum[i][0] == studentName)
+				{
+					// Save the number
+						nameNum[i][1] = number;
+						break;
+				}
+				else
+					{
+						continue;
+					}
+			}
+		} //End save minus value
+
+		function removeStudent(removeName, rowNumber)
+		{
+			for (i=0; i < nameNum.length; i++)
+			{
+				// Find the matching name value
+				if (nameNum[i][0] == removeName)
+				{
+					// Delete the student
+						nameNum.splice(i,1);
+					// Remove the row
+						document.getElementById(rowNumber).remove();
+						break;
+				}
+				else
+					{
+						continue;
+					}
+			}
+		}
+
+		createFunction.tableFunction = function()
+		{
+			for (i=0; i < nameNum.length; i++)
+			{
+				//table row variable
+				var tr = document.createElement("tr");
+				tr.setAttribute("id", "row"+[i]);
+				var tr1 = document.createElement("tr");
+				tr1.setAttribute("id", "add");
+				//td variables
+				var td = document.createElement("td");
+				var td2 = document.createElement("td");
+				var td3 = document.createElement("td");
+				var td4 = document.createElement("td");
+				var td5 = document.createElement("td");
+				td.setAttribute("colspan", 2);
+				td.setAttribute("id", "dataSquare"+[i]);
+				td.setAttribute("class", "dataSquare2"+[i])
+				td2.setAttribute("id", "dataSquare2"+[i]);
+				td3.setAttribute("id", "dataSquare3"+[i]);
+				td4.setAttribute("id", "dataSquare4"+[i]);
+				td5.setAttribute("id", "dataSquare5"+[i]);
+				//span variables
+				var span = document.createElement("span");
+				var input = document.createElement("input");
+				span.setAttribute("id", "student"+[i]);
+				span.setAttribute("class", "row"+[i]);
+				input.setAttribute("id", "button"+[i]);
+				input.setAttribute("name", "leaders");
+				input.setAttribute("dataset", "student"+[i]);
+				input.setAttribute("type", "number");
+				input.setAttribute("class", "center");
+				input.setAttribute("min", 0);
+				input.setAttribute("value", 0);
+				//button variables
+				//add button
+				var buttonAdd = document.createElement("button");
+				buttonAdd.setAttribute("dataset", "button"+[i]);
+				buttonAdd.setAttribute("class", "addButton");
+				buttonAdd.setAttribute("type", "button");
+				buttonAdd.innerHTML = "+";
+				//minus button
+				var buttonMinus = document.createElement("button");
+				buttonMinus.setAttribute("dataset", "button"+[i]);
+				buttonMinus.setAttribute("class", "minButton");
+				buttonMinus.setAttribute("type", "button");
+				buttonMinus.innerHTML = "-";
+				//delete button
+				var deleteButton = document.createElement("button");
+				deleteButton.setAttribute("dataset.remove", "row"+[i]);
+				deleteButton.innerHTML = "Delete Student";
+				//create table
+				//table row
+				document.getElementById("addToMe").appendChild(tr);
+				//table data
+				document.getElementById("row"+[i]).appendChild(td5);
+				//delete button
+				document.getElementById("dataSquare5"+[i]).appendChild(deleteButton);
+				//data square
+				document.getElementById("row"+[i]).appendChild(td);
+				//data span
+				document.getElementById("dataSquare"+[i]).appendChild(span);
+				//table data2
+				document.getElementById("row"+[i]).appendChild(td2);
+				//table data2 input
+				document.getElementById("dataSquare2"+[i]).appendChild(input);
+				//table data3
+				document.getElementById("row"+[i]).appendChild(td3);
+				//table data3 add button
+				document.getElementById("dataSquare3"+[i]).appendChild(buttonAdd);
+				//table data4
+				document.getElementById("row"+[i]).appendChild(td4);
+				//table data4 minus button
+				document.getElementById("dataSquare4"+[i]).appendChild(buttonMinus);
+				document.getElementById("student"+[i]).innerHTML = nameNum[i][0];
+				document.getElementById("button"+[i]).value = nameNum[i][1];
+			} //End for loop
+		} // End prototype function
+
+			 //wait for file insert change
+        document.getElementById('inputfile').addEventListener('change', function() {
+						//read file
+						var fr = new FileReader();
+            fr.onload = function(){
+							fileContent = [];
+							allNames = [];
+							nameNum = [];
+							setToSave = [];
+							for (i=0; i < fr.result.split('\n').length; i++)
+							{
+								//inital array split
+								fileContent = (fr.result.split('\n'));
+							}
+							for (i=0; i < fileContent.length; i++)
+							{
+								//split array
+								allNames[i] = fileContent[i].split(',');
+								setToSave[i] = fileContent[i].split(',');
+							}
+              //Remove class name from array, store in another variable
+							var classes = allNames.shift();
+              var currentClass = classes;
+              for (i = 0, j = 0; i < allNames.length-1; i++, j++)
+              {
+                      nameNum[j] = allNames[i];
+              };
+							//Set class name
+							document.getElementById("className").innerHTML = currentClass;
+							var newBody = document.createElement('tbody');
+							newBody.setAttribute("id", "addToMe");
+							document.getElementById("addToMe").remove();
+							document.getElementById("table").appendChild(newBody);
+							createFunction.tableFunction();
+            }
+						//read files
+            fr.readAsText(this.files[0]);
+        })
+    </script>
+  <div class="center">
+    <select name="order" id="order">
+			<option value="none">Select order</option>
+      <option value="first">First Name</option>
+      <option value="last">Last Name</option>
+    </select>
+  </div>
+	  <br>
+	<div id="placement">
+	<table id="table" border="1">
+  <!--Students - Yes - No - Peer Reviewed
+      (name) - (yes) - (no) - (number of peer reviews)-->
+			<thead>
+				<tr>
+					<th>Delete Student</th>
+		   		<th colspan="2">Students</th>
+		   		<th>Peers Reviewed</th>
+		   		<th>Add</th>
+		   		<th>Subtract</th>
+				</tr>
+			</thead>
+	<tbody id="addToMe">
+	</tbody>
+		<script>
+		//Organize by first name
+		document.getElementById('order').addEventListener('change', function() {
+			var value = document.getElementById('order').value;
+			if (value == "first")
+			{
+				nameNum.sort();
+				//Set up table again
+				var newBody = document.createElement('tbody');
+				newBody.setAttribute("id", "addToMe");
+				document.getElementById("addToMe").remove();
+				document.getElementById("table").appendChild(newBody);
+				createFunction.tableFunction();
+			}//End if
+			//Organize by last name
+			if (value == "last")
+  			{
+          var notNameNum = [];
+          for (i = 0; i < nameNum.length; i++)
+            {
+              notNameNum[i] = nameNum[i];
+            };
+  				var sortedByLast = []
+          //for loop to initialize sortedByLast
+          for (i=0; i < notNameNum.length; i++)
+            {
+              //
+              var fullName = notNameNum[i][0];
+              var lastNameSplit = fullName.split(' ');
+              var lastName = lastNameSplit[1];
+              //lastname is a string containing the last name. now put them into sortedByLAst, and sort by last
+              sortedByLast[i] = lastName;
+              //sortedByLast is now the sorted array of last names
+             }//end of for loop
+             sortedByLast.sort(function compare(a, b) {
+               if (a < b) {
+                 return -1;
+               }
+               if (a > b) {
+                 return 1;
+               }
+               return 0;
+             });
+          //for loop to sort notNameNum by last name
+          for (i=0; i < sortedByLast.length; i++)
+          {
+            var curLastName = sortedByLast[i];
+            //notNameNum is a copy of nameNum
+            for (j=0; j < notNameNum.length; j++)
+              {
+                var fullNameNum = notNameNum[j]
+                var curNameNum = notNameNum[j][0];
+                //start should be the beginning of the last name in nameNum
+                start = curNameNum.length - curLastName.length;
+                //end is length of nameNum
+                end = curNameNum.length;
+                lastNameNum = curNameNum.substr(start, end);
+                if (lastNameNum == curLastName)
+                {
+                  //swap values
+                  nameNum[i] = notNameNum[j]
+                }
+              }
+          }
+        var newBody = document.createElement('tbody');
+        newBody.setAttribute("id", "addToMe");
+        document.getElementById("addToMe").remove();
+        document.getElementById("table").appendChild(newBody);
+        createFunction.tableFunction();
+        }//end if statement
+		})//End function
+
+		 window.addEventListener('click', function(ev){
+			 var trg = ev.target;
+			 //Set add buttons
+			 var addButtons = document.getElementsByClassName("addButton");
+			 for (i=0, r=0; i < addButtons.length; i++, r++)
+			 {
+				 addButtons[i].setAttribute("dataset.add", "button"+[r]);
+			 }
+			 //Set min buttons
+			 var minButtons = document.getElementsByClassName("minButton");
+			 for (i=0, r=0; i < minButtons.length; i++, r++)
+			 {
+				 minButtons[i].setAttribute("dataset.min", "button"+[r]);
+			 }
+			 //Check if it's a button
+			 if (trg.nodeName.toLowerCase() != "button")
+			 	{
+			 	return;
+			 	}
+				//Add
+			 if (trg.innerHTML == "+")
+			 {
+				 var attribute = trg.getAttribute("dataset.add");
+				 var className = document.getElementById(attribute).getAttribute("dataset");
+				 var inputValue = document.getElementById(attribute);
+				 saveAddValue(attribute, className, inputValue);
+			 }
+			 //Subtract
+			 if (trg.innerHTML == "-")
+			 {
+				 var attribute = trg.getAttribute("dataset.min");
+				 var className = document.getElementById(attribute).getAttribute("dataset");
+				 var inputValue = document.getElementById(attribute);
+				 saveMinusValue(attribute, className, inputValue);
+			 }
+			 if (trg.innerHTML == "Delete Student")
+			 {
+				 var rowNumber = trg.getAttribute("dataset.remove");
+				 var remove = document.getElementsByClassName(rowNumber)[0];
+				 var removeName = remove.innerHTML;
+				 removeStudent(removeName, rowNumber);
+			 }
+		 })
+		</script>
+	</table>
+	</div>
+	<br>
+	<button class="Move" type="button">Add Student</button>
+	<script>
+		window.addEventListener('click', function(ev){
+		var trg = ev.target;
+		//Check if it's a button
+		if (trg.nodeName.toLowerCase() != "button")
+		 {
+		 return;
+		 }
+		 //Add student
+		 if (trg.innerHTML == "Add Student")
+		 {
+			 var name = prompt("Enter student's first and last name:", "Jaune Arc");
+			 if (name == null)
+			 {
+				 return
+			 }
+			 else
+			 {
+			 var peerReview = "0";
+			 nameNum.size++;
+			 nameNum.push([name, peerReview]);
+			 //Aw shit, here we go again...
+			 var newBody = document.createElement('tbody');
+			 newBody.setAttribute("id", "addToMe");
+			 document.getElementById("addToMe").remove();
+			 document.getElementById("table").appendChild(newBody);
+			 createFunction.tableFunction();
+		 }
+	 }
+		})
+	</script>
+	<br>
+	<button class="Move" type="button" id="saveTable">Save Table to File</button>
+	<script>
+	window.addEventListener('click', function(ev){
+	var trg = ev.target;
+	//Check if it's a button
+	if (trg.nodeName.toLowerCase() != "button")
+	 {
+	 return;
+	 }
+	 //Save File
+	 if (trg.innerHTML == "Save Table to File")
+	 {
+		 var fileName = document.getElementById("className").innerHTML;
+		 var testData = JSON.stringify(setToSave[0]);
+		 testData = testData.replaceAll('[', '');
+		 testData = testData.replaceAll(']', "\n");
+		 testData = testData.replaceAll('"', '')
+		 for (i=0; i < nameNum.length; i++)
+		 {
+			 testData += JSON.stringify(nameNum[i]);
+	 		testData = testData.replaceAll('[', '');
+	 		testData = testData.replaceAll(']', "\n");
+	 		testData = testData.replaceAll('"', '');
+		}
+		 console.log(testData);
+		function download(content, fileName, contentType) {
+		    var a = document.createElement("a");
+		    var file = new Blob([content], {type: contentType});
+		    a.href = URL.createObjectURL(file);
+		    a.download = fileName;
+		    a.click();
+		}
+		download(testData, fileName +'.txt', 'text/plain');
+	}
+})
+	</script>
+  <div id="selectstuff">
+<select id="optionsForLeaderboard" name="leaderboard">
+	<option value="0">Select a Leaderboard Option</option>
+  <option value="top5">Top 5</option>
+  <option value="top10">Top 10</option>
+  <option value="top15">Top 15</option>
+</select>
+<script>
+  list.generateLeaderboard = function(){
+    if (document.getElementById("leaderboard").style.display == "none"){
+      document.getElementById("leaderboard").style.display = "block";
+    }
+    /********BEGINNING OF SORT OPERATION********/
+    console.log(document.getElementById("optionsForLeaderboard").value);
+      var numOfStud;
+			var trg = document.getElementById("optionsForLeaderboard");
+      var currentStudents = [];
+      for (var i = 0; i < nameNum.length; i++)
+      {
+        currentStudents[i] = document.getElementById("student" + [i]).innerHTML;
+      }
+      var inputs = document.getElementsByName("leaders");
+      var inputValues = [];
+      for (var i=0; i<inputs.length; i++){
+        inputValues[i] = inputs[i].value;
+      }
+      //inputValues is current values from the list
+      var valHold = inputValues[0];
+      var nameHold = currentStudents[0]
+      console.log(currentStudents, inputValues);
+      for(var i=0, j=1; i < inputs.length - 1;)
+      {
+        if ((parseInt(valHold) >= parseInt(inputValues[j])) && (j != inputs.length - 1))
+        {
+          j++
+          continue
+        }
+        else if (parseInt(valHold) < parseInt(inputValues[j]))
+        {
+          valHold = inputValues[j];
+          nameHold = currentStudents[j];
+          //but keep searching for values greater than j
+        }
+        if (j == (inputs.length - 1))
+        {
+          var index = currentStudents.indexOf(nameHold);
+          inputValues[index] = inputValues[i];
+          currentStudents[index] = currentStudents[i];
+          inputValues[i] = valHold;
+          currentStudents[i] = nameHold;
+          i++;
+          j = i + 1;
+          valHold = inputValues[i];
+          nameHold = currentStudents[i];
+        }
+
+      }
+      /***************END OF SORTING*******************/
+      if (trg.value == 'top5'){
+        if (currentStudents.length >= 5){
+          numOfStud = 5;
+        }
+        else if (currentStudents.length < 5){
+          numOfStud = currentStudents.length;
+        }
+      }
+      if(trg.value == 'top10'){
+        //check if students is less than 10 so the leaderboard generation doesn't fuck up
+        if (currentStudents.length >= 10){
+          numOfStud = 10;
+        }
+        else if (currentStudents.length < 10){
+          numOfStud = currentStudents.length;
+        }
+      }
+      if (trg.value == 'top15'){
+        if (currentStudents.length >= 15){
+          numOfStud = 15;
+        }
+        else if (currentStudents.length < 15){
+          numOfStud = currentStudents.length;
+        }
+      }
+      var forCopy = "|---Rank---Name---Peer Reviews---|\n";
+      for (var i = 0; i < numOfStud; i++){
+        var addLine = "";
+        addLine += "|---" + (i + 1) + "---";
+        addLine += currentStudents[i];
+        addLine += "---" + inputValues[i] + "--|";
+        if (addLine.length < 32)
+        {
+          addLine = "";
+          addLine += "---" + i + "---";
+          addLine += currentStudents[i] + inputValues[i];
+          var dif = (30 - addLine.length);
+          var inputDash = ""
+          for (var x = 0; x < dif; x++)
+            {
+              inputDash += "-";
+            }
+            addLine = "|---" + (i + 1) + "---";
+            addLine += currentStudents[i] + inputDash + inputValues[i] + "--|";
+        }
+        else if (addLine.length > 32)
+        {
+          console.log("too big");
+          var diff = addLine.length - 34;
+          console.log(diff);
+          var end = currentStudents[i].length - diff;
+          console.log(end);
+          var name = currentStudents[i];
+          var newName = name.substring(0, end);
+          addLine = "";
+          addLine += "|---" + (i + 1) + "---";
+          addLine += newName;
+          addLine += "---" + inputValues[i] + "--|";
+        }
+        addLine += "\n"
+        forCopy += addLine;
+      }
+      document.getElementById("leaderboardDisplay").value = forCopy;
+
+      //table gen
+			var newBody = document.createElement('tbody');
+			newBody.setAttribute("id", "deleteMe");
+			document.getElementById("deleteMe").remove();
+			document.getElementById("board").appendChild(newBody);
+			for (i=0, j=1; i < numOfStud; i++, j++)
+			{
+				// Create the table body
+				var tableBody = document.createElement("tbody");
+				// table row
+				var tr = document.createElement("tr");
+				tr.setAttribute("id", "rows"+[i]);
+				// table squares
+				var td = document.createElement("td");
+				var td1 = document.createElement("td");
+				var td2 = document.createElement("td");
+				td.setAttribute("id", "square"+[i]);
+				td1.setAttribute("id", "square2"+[i]);
+				td2.setAttribute("id", "valueSquare"+[i]);
+				// Set up leaderboard
+				document.getElementById("deleteMe").appendChild(tr);
+				document.getElementById("rows"+[i]).appendChild(td);
+				document.getElementById("rows"+[i]).appendChild(td1);
+				document.getElementById("rows"+[i]).appendChild(td2);
+				//Number
+				document.getElementById("square"+[i]).innerHTML = [j];
+				var name = inputs[i].getAttribute("dataset");
+				var insert = currentStudents[i];
+				//Name
+				document.getElementById("square2"+[i]).innerHTML = insert;
+        var valueInsert = inputValues[i];
+        document.getElementById("valueSquare" + [i]).innerHTML = valueInsert;
+			}
+    } //End function
+	</script>
+<button type="Button" id="button15">Generate Leaderboard</button>
+</div>
+  <div class="leaderboard" id="leaderboard">
+  <table id="board" class="leaderboard" border="1" margin-left="auto" margin-right="auto">
+		<thead>
+			<tr>
+      	<th>Placement</th>
+      	<th>Name</th>
+				<th>Number of Peer Reviews</th>
+    	</tr>
+		</thead>
+
+		<tbody id="deleteMe">
+		</tbody>
+  </table>
+
+    <h3>Copy Me!</h3>
+    <textarea id="leaderboardDisplay" placeholder="--Rank---Name---Peer Reviews--" name="leaderboardDisplay" cols="40" rows="30">
+    </textarea>
+
+</div>
+</body>
+</html>

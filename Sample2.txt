@@ -1,0 +1,6 @@
+Voltron Training
+Lance McClain,0
+Pidge Holt,5
+Keith Kogane,2
+Hunk Garret,3
+Takashi Shirogane,5
